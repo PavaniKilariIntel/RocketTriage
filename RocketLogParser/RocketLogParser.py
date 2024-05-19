@@ -15,7 +15,7 @@ def readLogFile(fileName):
                     substring.lower() in line.lower() for substring in include_list) and not any(
                     substring.lower() in line.lower() for substring in exclude_list):
                 errors = errors + 1
-                uniqErrors.add(f.name.split('\\')[-1] + " --> " + line.strip())
+                uniqErrors.add(f.name.split('\\')[-1] + ", " + line.strip().replace(";", ","))
     # print(f"TOTAL ERRORS IN THE LOG {fileName} FILES :: ", errors)
 
 
