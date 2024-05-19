@@ -5,26 +5,27 @@ import sys
 uniqErrors = set()  # holds lines already seen
 exclude_list = ["unregister", "fishing", "ignore", "Log Categories", "No error", "Caught PM error while fishing"]
 include_list = ["; PID(", "line #"]
-
+errors = 0
 
 def readLogFile(fileName):
-    errors = 0
+    global errors
     with open(fileName, 'r') as f:
         for line in f:
-            if ("error" in line.lower() or "fail" in line.lower()) and all(
-                    substring.lower() in line.lower() for substring in include_list) and not any(
-                    substring.lower() in line.lower() for substring in exclude_list):
+            line = line.strip().lower()
+            if ("error" in line or "fail" in line) and all(substring.lower() in line for substring in include_list) and not any(substring.lower() in line for substring in exclude_list):
                 errors = errors + 1
-                uniqErrors.add(f.name.split('\\')[-1] + ", " + line.strip().replace(";", ","))
+                # Following line generates complete error message,
+                # but we are interested in the Rocket application and error msg.
+                # uniqErrors.add(f.name.split('\\')[-1] + ", " + line.strip().replace(";", ","))
+                uniqErrors.add( (f.name.split('\\')[-1]).split("_")[0] + ":" + line.replace(";", ",").split(",")[-1])
     # print(f"TOTAL ERRORS IN THE LOG {fileName} FILES :: ", errors)
 
 
 def printErrors():
     linenum = 0
-    sorted(uniqErrors)
-    for errors in uniqErrors:
+    for errorstr in sorted(uniqErrors):
         linenum = linenum + 1
-        print(errors)
+        print(errorstr)
     print("Total Unique Errors found :: ", linenum)
 
 
@@ -42,11 +43,12 @@ def main():
 
     x = 0
 
-    print('Named with wildcard *.log :')
+    # print('Named with wildcard *.log :')
     for files in glob.glob(direc + '*.log'):
         x = x + 1
         readLogFile(files)
     printErrors()
+    print("TOTAL ERRORS LOCATED :: ", errors)
     print("TOTAL LOG FILES ::: ", x)
 
 
