@@ -8,7 +8,7 @@ maxstrings = set()
 
 
 def main():
-    with open('errorlog.txt', 'r') as f:
+    with open('../RocketLogParser/errorlog.txt', 'r') as f:
         linecount = 0
         for line in f:
             if (line.strip().split(",").__len__() > 2):

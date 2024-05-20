@@ -27,7 +27,7 @@ def read_log_file(file):
     # print(f"TOTAL ERRORS IN THE LOG {fileName} FILES :: ", errors)
 
 
-def get_results():
+def get_summary():
     results_dict = defaultdict()
     results_dict["TOTAL LOG FILES SCANNED "] =  total_log_files
     results_dict["TOTAL ERRORS LOGGED  "] =  errors
@@ -42,9 +42,10 @@ def scan_log_dir(directory):
     total_log_files = files.__len__()
 
     # print('Named with wildcard *.log :')
+    # Reading each file separately and parsing the results
     for file in files:
         read_log_file(file)
-    results = get_results()
+    results = get_summary()
     return sorted(unique_errors), results
 
 

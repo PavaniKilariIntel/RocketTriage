@@ -14,23 +14,20 @@ directory = input(r"Enter the path of the folder: ") or (
 def main():
     # READING DIR NAME FROM COMMAND LINE
     print(f"Files in the directory: {directory}")
-    # if not directory:
-    #     directory = "C:/Pavani/Projects/ACE/GENAI/Triage/Rocket/ROCKET_LOGS/Archive/EXTRACTED/logs/"
-    #     print("The directory is empty, assign default path :: ", directory)
 
-    errors, results = parser.scan_log_dir(directory)
+    errors, summary = parser.scan_log_dir(directory)
     print("ERRORS IN THE ROCKET ::")
     # print(*errors, sep="\n")
     default_dist = defaultdict()
     for error in errors:
         default_dist[error] = hsd.get_similar_hsds(error)
 
-    print("DEFAULT DICTONARY ::: ", default_dist)
+    # print("DEFAULT DICTONARY ::: ", default_dist)
 
-    send_email(default_dist, results)
+    send_email(default_dist, summary)
 
 
-def send_email(default_dist, results):
+def send_email(default_dist, summary):
     html_body = '''
     <header>
         <style>
@@ -73,14 +70,14 @@ def send_email(default_dist, results):
     Please find the Rocket Triage results below.
     </br></br></br>
     '''
-    for k,v in results.items():
+    for k,v in summary.items():
         html_body += k + " ::: " + str(v) + " </br>"
 
     html_body +=''' </br></br></br>
         <table id="ROCKET_ERROR_HSD">
           <tr>
             <th>ROCKET ERROR</th>
-            <th>SIMILAR HSD</th>
+            <th>SIMILAR HSDs</th>
           </tr>
       '''
 
@@ -91,9 +88,10 @@ def send_email(default_dist, results):
         html_body += "</ul></td></tr>"
     html_body += "</table></body>"
 
-    email.sendEmail(toaddr='pswarupa',
-                    fromaddr="ive.genai.demo.email@intel.com",
-                    subjectText="ROCKET : HSDs located based on the errors from Rocket failures",
+    email.sendEmail(toaddr='pswarupa,ive.postdnv.ace.evo@intel.com',
+                    fromaddr="ive.svosai.rocket@intel.com",
+                    subjectText="[Testing PDL] ROCKET Triage Summary - WIP ",
+                    # subjectText="ROCKET : HSDs located based on the errors from Rocket failures",
                     bodyText="",
                     htmlText=html_body)
 
