@@ -1,6 +1,8 @@
 # import OS module
 import glob
 import sys
+from collections import defaultdict
+
 
 unique_errors = set()  # holds lines already seen
 exclude_list = ["unregister", "fishing", "ignore", "Log Categories", "No error", "Caught PM error while fishing"]
@@ -25,11 +27,12 @@ def read_log_file(file):
     # print(f"TOTAL ERRORS IN THE LOG {fileName} FILES :: ", errors)
 
 
-def print_errors():
-    # print(*unique_errors, sep="\n")
-    print("TOTAL LOG FILES SCANNED  ::: ", total_log_files)
-    print("TOTAL ERRORS LOGGED      ::: ", errors)
-    print("TOTAL UNIQUE PATTERNS    ::: ", unique_errors.__len__())
+def get_results():
+    results_dict = defaultdict()
+    results_dict["TOTAL LOG FILES SCANNED "] =  total_log_files
+    results_dict["TOTAL ERRORS LOGGED  "] =  errors
+    results_dict["TOTAL UNIQUE PATTERNS  "] =  unique_errors.__len__()
+    return results_dict
 
 
 def scan_log_dir(directory):
@@ -41,8 +44,8 @@ def scan_log_dir(directory):
     # print('Named with wildcard *.log :')
     for file in files:
         read_log_file(file)
-    print_errors()
-    return sorted(unique_errors)
+    results = get_results()
+    return sorted(unique_errors), results
 
 
 def main():

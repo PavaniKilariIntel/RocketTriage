@@ -21,8 +21,6 @@ def get_similar_hsds(config_value):
     return similar_hsds
 
 
-
-
 def main():
     get_similar_hsds("SAMPLE")
 

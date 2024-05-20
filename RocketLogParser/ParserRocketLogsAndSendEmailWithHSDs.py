@@ -7,8 +7,8 @@ import send_email_connector as email
 
 
 directory = input(r"Enter the path of the folder: ") or (
-    "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\Archive\\EXTRACTED\\logs\\")
-    # "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs2\\")
+    "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs2\\")
+    # "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\Archive\\EXTRACTED\\logs\\")
 
 
 def main():
@@ -18,31 +18,19 @@ def main():
     #     directory = "C:/Pavani/Projects/ACE/GENAI/Triage/Rocket/ROCKET_LOGS/Archive/EXTRACTED/logs/"
     #     print("The directory is empty, assign default path :: ", directory)
 
-    errors = parser.scan_log_dir(directory)
+    errors, results = parser.scan_log_dir(directory)
     print("ERRORS IN THE ROCKET ::")
     # print(*errors, sep="\n")
-    headers = ["ERROR NAME", "SIMILAR HSDs"]
     default_dist = defaultdict()
     for error in errors:
         default_dist[error] = hsd.get_similar_hsds(error)
 
-    # print("DEFAULT DICTONARY ::: ", json.dumps(default_dist, indent=2))
     print("DEFAULT DICTONARY ::: ", default_dist)
-    # for key in default_dist:
-    #     print(key, " ----> ", default_dist[key])
-    # for key in default_dist:
-    #     print(key)
-    #     for hds in default_dist[key]:
-    #         print(hsd)
 
-    send_email(default_dist)
-    # email.sendEmail(toaddr = 'pswarupa@an.intel.com',
-    #                 fromaddr = "ive.genai.demo.email@intel.com",
-    #                 subjectText = "ROCKET : HSDs located based on the errors from Rocket failures",
-    #                 bodyText = "")
+    send_email(default_dist, results)
 
 
-def send_email(default_dist):
+def send_email(default_dist, results):
     html_body = '''
     <header>
         <style>
@@ -84,11 +72,16 @@ def send_email(default_dist):
     </br></br>
     Please find the Rocket Triage results below.
     </br></br></br>
-    <table id="ROCKET_ERROR_HSD">
-      <tr>
-        <th>ROCKET ERROR</th>
-        <th>SIMILAR HSD</th>
-      </tr>
+    '''
+    for k,v in results.items():
+        html_body += k + " ::: " + str(v) + " </br>"
+
+    html_body +=''' </br></br></br>
+        <table id="ROCKET_ERROR_HSD">
+          <tr>
+            <th>ROCKET ERROR</th>
+            <th>SIMILAR HSD</th>
+          </tr>
       '''
 
     for key, value in default_dist.items():
