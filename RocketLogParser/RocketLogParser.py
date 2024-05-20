@@ -26,32 +26,27 @@ def read_log_file(file):
 
 
 def print_errors():
-    print(*unique_errors, sep="\n")
+    # print(*unique_errors, sep="\n")
     print("TOTAL LOG FILES SCANNED  ::: ", total_log_files)
     print("TOTAL ERRORS LOGGED      ::: ", errors)
     print("TOTAL UNIQUE PATTERNS    ::: ", unique_errors.__len__())
 
 
-def main():
+def scan_log_dir(directory):
     # Get the list of all files and directories
-
-    # "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs2\\"
-    # READING DIR NAME FROM COMMAND LINE
-    direc = input(r"Enter the path of the folder: ") or (
-        "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\Archive\\EXTRACTED\\logs\\")
-    print(f"Files in the directory: {direc}")
-    # if not direc:
-    #     direc = "C:/Pavani/Projects/ACE/GENAI/Triage/Rocket/ROCKET_LOGS/Archive/EXTRACTED/logs/"
-    #     print("The directory is empty, assign default path :: ", direc)
-
     global total_log_files
-    files = glob.glob(direc + '*.log')
+    files = glob.glob(directory + '*.log')
     total_log_files = files.__len__()
 
     # print('Named with wildcard *.log :')
     for file in files:
         read_log_file(file)
     print_errors()
+    return sorted(unique_errors)
+
+
+def main():
+    scan_log_dir("C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs2\\")
 
 
 if __name__ == "__main__":
