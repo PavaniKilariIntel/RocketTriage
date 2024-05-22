@@ -16,7 +16,10 @@ def get_similar_hsds(config_value):
     similar_hsds = list()
     for article in response['data']:
         # similar_hsds.append(article["id"])
-        similar_hsds.append(hsd_base_url+article["id"])
+        if article['status'] != "rejected":
+            similar_hsds.append(hsd_base_url+article["id"])
+        else:
+            print("Ignoring rejected solution : ", article["id"])
         print(f'{hsd_base_url}{article["id"]} {article["title"]}')
     return similar_hsds
 
