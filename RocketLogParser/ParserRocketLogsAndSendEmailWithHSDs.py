@@ -1,33 +1,38 @@
 import sys
 from collections import defaultdict
+import timeit
 
 import RocketLogParser as parser
 import hsd_similarity_connector as hsd
 import send_email_connector as email
 
-
 directory = input(r"Enter the path of the folder: ") or (
-    "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs2\\")
+    "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\rocket_extracted_logs\\logs1\\")
     # "C:\\Pavani\\Projects\\ACE\\GENAI\\Triage\\Rocket\\ROCKET_LOGS\\Archive\\EXTRACTED\\logs\\")
 
 
 def main():
+    start = timeit.default_timer()
     # READING DIR NAME FROM COMMAND LINE
-    print(f"Files in the directory: {directory}")
+    print(f"Parsing files in the directory: {directory}")
 
     errors, summary = parser.scan_log_dir(directory)
     print("ERRORS IN THE ROCKET ::")
     # print(*errors, sep="\n")
-    default_dist = defaultdict()
+    default_dict = defaultdict()
     for error in errors:
-        default_dist[error] = hsd.get_similar_hsds(error)
+        default_dict[error] = hsd.get_similar_hsds(error)
 
-    # print("DEFAULT DICTONARY ::: ", default_dist)
+    # print("DEFAULT DICTONARY ::: ", default_dict)
 
-    send_email(default_dist, summary)
+    send_email(default_dict, summary)
+
+    stop = timeit.default_timer()
+
+    print('\n\nTotal Execution Time: ', stop - start)
 
 
-def send_email(default_dist, summary):
+def send_email(default_dict, summary):
     html_body = '''
     <header>
         <style>
@@ -78,17 +83,24 @@ def send_email(default_dist, summary):
           <tr>
             <th>ROCKET ERROR</th>
             <th>SIMILAR HSDs</th>
+            <th>OpenAI Summary</th>
           </tr>
       '''
 
-    for key, value in default_dist.items():
-        html_body += "<tr> <td>" + key + "</td><td><ul>"
+    for key, value in default_dict.items():
+        html_body += "<tr> <td>" + key + "</td>"
+        hsds = "<td><ul>"
+        ai_summary = "<td style=font size =-2><ul>"
         for hsd_urls in value:
-            html_body += "<li>" + str(hsd_urls).replace(" ", "") + "</li>"
-        html_body += "</ul></td></tr>"
+            hsd_n_summary = str(hsd_urls).replace(" ", "").split(":::")
+            hsds+="<li>"+hsd_n_summary[0]+"</li>"
+            ai_summary+="<pre>"+hsd_n_summary[1]+"</pre> </br> <hr> </br>"
+        hsds+="</ul>"
+        ai_summary+="</ul>"
+        html_body += hsds+"</td>"+ai_summary+"</td></tr>"
     html_body += "</table></body>"
 
-    email.sendEmail(toaddr='pswarupa,ive.postdnv.ace.evo@intel.com',
+    email.sendEmail(toaddr='pswarupa',
                     fromaddr="ive.svosai.rocket@intel.com",
                     subjectText="[Testing PDL] ROCKET Triage Summary - WIP ",
                     # subjectText="ROCKET : HSDs located based on the errors from Rocket failures",

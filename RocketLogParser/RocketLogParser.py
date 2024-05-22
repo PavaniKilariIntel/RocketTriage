@@ -11,7 +11,7 @@ errors = 0
 total_log_files = 0
 
 
-def read_log_file(file):
+def parse_log_file(file):
     global errors
     with open(file, 'r') as f:
         for line in f:
@@ -44,7 +44,7 @@ def scan_log_dir(directory):
     # print('Named with wildcard *.log :')
     # Reading each file separately and parsing the results
     for file in files:
-        read_log_file(file)
+        parse_log_file(file)
     results = get_summary()
     return sorted(unique_errors), results
 
