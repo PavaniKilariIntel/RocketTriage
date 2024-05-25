@@ -1,0 +1,55 @@
+<header>
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+#title{
+  color:#084;
+  font-weight:bold;
+}
+#warning{
+  color:#F40;
+  font-weight:bold;
+}
+#demotable {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#demotable td, #demotable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#demotable tr:nth-child(even){background-color: #f2f2f2;}
+
+#demotable tr:hover {background-color: #ddd;}
+
+#demotable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+<body>
+<span id="title">OpenAI-generated&nbsp;HSD&nbsp;summaries<br />
+<br />
+</span>
+<table id="demotable">
+  <tr>
+    <th>HSD</th>
+    <th>Title</th>
+    <th>Summary</th>
+  </tr>
+  <tr>
+    <td><a href="https://hsdes.intel.com/appstore/article/#/14019838809" target="_BLANK">14019838809</a></td>    <td>[EMR][CR][SVOS:2320][23ww28.03][SVOS_CR_Kernel6.3][Content:RocketBase]&nbsp;ArdenRand&nbsp;test&nbsp;fails&nbsp;due&nbsp;to&nbsp;EAFE&nbsp;invalid&nbsp;device&nbsp;option&nbsp;when&nbsp;parsing&nbsp;config&nbsp;file</td>    <td>Summary:<br />
+The&nbsp;ArdenRand&nbsp;test&nbsp;is&nbsp;failing&nbsp;due&nbsp;to&nbsp;an&nbsp;error&nbsp;with&nbsp;the&nbsp;parsing&nbsp;of&nbsp;a&nbsp;configuration&nbsp;file.&nbsp;The&nbsp;test&nbsp;was&nbsp;expecting&nbsp;70&nbsp;applications&nbsp;to&nbsp;sync&nbsp;but&nbsp;terminated&nbsp;early&nbsp;because&nbsp;the&nbsp;internal&nbsp;library&nbsp;or&nbsp;driver&nbsp;encountered&nbsp;an&nbsp;error,&nbsp;indicated&nbsp;by&nbsp;an&nbsp;error&nbsp;code&nbsp;22.&nbsp;The&nbsp;specific&nbsp;parse&nbsp;error&nbsp;is&nbsp;on&nbsp;line&nbsp;2791&nbsp;of&nbsp;the&nbsp;file&nbsp;&quot;arden_00_socket0_peg.cfg,&quot;&nbsp;where&nbsp;a&nbsp;device&nbsp;option&nbsp;named&nbsp;&quot;vtd_eafe_mode_device&quot;&nbsp;was&nbsp;not&nbsp;found&nbsp;for&nbsp;a&nbsp;device&nbsp;called&nbsp;vtd_device.&nbsp;The&nbsp;log&nbsp;suggests&nbsp;checking&nbsp;the&nbsp;configuration&nbsp;file&nbsp;or&nbsp;the&nbsp;file&nbsp;&quot;configValidParams.c&quot;&nbsp;for&nbsp;a&nbsp;complete&nbsp;list&nbsp;of&nbsp;parameters.<br />
+<br />
+No&nbsp;direct&nbsp;solution&nbsp;to&nbsp;the&nbsp;failure&nbsp;was&nbsp;provided&nbsp;in&nbsp;the&nbsp;summary,&nbsp;but&nbsp;a&nbsp;comment&nbsp;by&nbsp;a&nbsp;user&nbsp;named&nbsp;pswarupa&nbsp;notes&nbsp;that&nbsp;the&nbsp;EAFE&nbsp;feature&nbsp;is&nbsp;not&nbsp;enabled&nbsp;in&nbsp;the&nbsp;current&nbsp;release&nbsp;(EMR2320).&nbsp;It&nbsp;is&nbsp;implied&nbsp;that&nbsp;the&nbsp;feature&nbsp;will&nbsp;be&nbsp;available&nbsp;in&nbsp;the&nbsp;next&nbsp;release,&nbsp;and&nbsp;the&nbsp;Configuration&nbsp;Record&nbsp;(CR)&nbsp;will&nbsp;include&nbsp;tests&nbsp;for&nbsp;VTd&nbsp;with&nbsp;the&nbsp;EAFE&nbsp;option,&nbsp;which&nbsp;suggests&nbsp;a&nbsp;potential&nbsp;resolution&nbsp;in&nbsp;a&nbsp;future&nbsp;update.</td>  </tr>
+  </table>
+</body>
