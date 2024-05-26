@@ -12,7 +12,7 @@ openai_conn = hsd.get_openai_connector()
 
 
 def summarize_hsd(full_hsd_info):
-    prompt = f"Please sumarize the text below which describes a failure observed in a system. Try to figure out if a solution was found. Do not expand acronyms. The text includes a title, a description and a series of cronological comments or updates.\n\n{full_hsd_info}"
+    prompt = f"Please sumarize the text below to max 200 words which describes a failure observed in a system. Try to figure out if a solution was found. Do not expand acronyms. The text includes a title, a description and a series of cronological comments or updates.\n\n{full_hsd_info}"
 
     # messages to be sent to the OpenAI model
     messages = [
